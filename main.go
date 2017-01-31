@@ -19,12 +19,12 @@ type timelineResponse struct {
 }
 
 type timeline struct {
-	StartTime     int64          `json:"startTime"`
-	EndTime       int64          `json:"endTime"`
-	FinalSchedule *finalSchedule `json:"finalSchedule"`
+	StartTime    int64         `json:"startTime"`
+	EndTime      int64         `json:"endTime"`
+	BaseSchedule *baseSchedule `json:"baseSchedule"`
 }
 
-type finalSchedule struct {
+type baseSchedule struct {
 	Rotations []rotation `json:"rotations"`
 }
 
@@ -76,6 +76,7 @@ func main() {
 	q.Set("name", scheduleName)
 	q.Set("intervalUnit", "months")
 	q.Set("date", date+" 00:00")
+	q.Set("details", "true")
 	u.RawQuery = q.Encode()
 
 	resp, err := http.Get(u.String())
@@ -109,7 +110,7 @@ func printReport(response *timelineResponse) {
 	validHours = make(map[string]time.Duration)
 
 	fmt.Println("\n====== schedule ======")
-	for _, rotation := range response.Timeline.FinalSchedule.Rotations {
+	for _, rotation := range response.Timeline.BaseSchedule.Rotations {
 		for _, period := range rotation.Periods {
 			if len(period.FlattenedRecipients) > 1 {
 				panic("period with more than one recipient")
