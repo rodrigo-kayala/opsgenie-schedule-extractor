@@ -58,10 +58,6 @@ type schedule struct {
 	Enabled  bool   `json:"enabled"`
 }
 
-const (
-	opsGenieTimelineEndpoit = "https://api.opsgenie.com/v1/json/schedule/timeline"
-)
-
 var holidays []string
 
 func main() {
